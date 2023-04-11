@@ -54,6 +54,18 @@ func (server *Server) GetKeys(w http.ResponseWriter, r *http.Request) {
 	response.JSON(w, http.StatusOK, Keys)
 }
 
+func (server *Server) GetExchanges(w http.ResponseWriter, r *http.Request) {
+
+	Exchange := models.Exchanges{}
+
+	Exchanges, err := Exchange.FindAllExchanges(server.DB)
+	if err != nil {
+		response.ERROR(w, http.StatusInternalServerError, err)
+		return
+	}
+	response.JSON(w, http.StatusOK, Exchanges)
+}
+
 func (server *Server) GetKey(w http.ResponseWriter, r *http.Request) {
 
 	kid := mux.Vars(r)["id"] //grab the id
