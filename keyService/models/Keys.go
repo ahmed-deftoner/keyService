@@ -58,6 +58,23 @@ func (u *Key) ValidateKey() error {
 	if u.ApiKey == "" {
 		return errors.New("api key required")
 	}
+	Exchange := Exchanges{}
+
+	Exchanges, err := Exchange.FindAllExchanges(&gorm.DB{})
+	if err != nil {
+		return errors.New("error getting exchnages")
+	}
+	p := strings.ToLower(u.Service)
+	found := false
+	for _, v := range *Exchanges {
+		if strings.Compare(strings.ToLower(v.Name), p) == 0 {
+			found = true
+			break
+		}
+	}
+	if found == false {
+		return errors.New("exchange does not exist")
+	}
 	return nil
 }
 
