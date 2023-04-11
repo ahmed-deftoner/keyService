@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"strings"
 
 	"github.com/ahmed-deftoner/keyService/controllers"
 	"github.com/joho/godotenv"
@@ -28,5 +29,17 @@ func Run() {
 }
 
 func main() {
+	exc := []string{"Binance", "Bitget", "OKEX"}
+	p := "Btget"
+	found := false
+	for _, v := range exc {
+		if strings.Compare(v, p) == 0 {
+			found = true
+			break
+		}
+	}
+	if found == true {
+		fmt.Println("found")
+	}
 	Run()
 }
