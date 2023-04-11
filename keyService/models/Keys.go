@@ -52,7 +52,7 @@ func (u *Key) Prepare() {
 	u.SecretKey = html.EscapeString(strings.TrimSpace(u.SecretKey))
 }
 
-func (u *Key) Validate() error {
+func (u *Key) ValidateKey() error {
 	if u.Uid == "" {
 		return errors.New("uid required")
 	}
@@ -68,12 +68,33 @@ func (u *Key) Validate() error {
 	return nil
 }
 
+func (e *Exchanges) ValidateExchange() error {
+	if e.Name == "" {
+		return errors.New("name required")
+	}
+	if e.ImageSrc == "" {
+		return errors.New("image src required")
+	}
+	if e.Short == "" {
+		return errors.New("short alias required")
+	}
+	return nil
+}
+
 func (u *Key) SaveKey(db *gorm.DB) (*Key, error) {
 	err := db.Debug().Create(&u).Error
 	if err != nil {
 		return &Key{}, err
 	}
 	return u, nil
+}
+
+func (e *Exchanges) SaveExchange(db *gorm.DB) (*Exchanges, error) {
+	err := db.Debug().Create(&e).Error
+	if err != nil {
+		return &Exchanges{}, err
+	}
+	return e, nil
 }
 
 func (u *Key) FindAllKeys(db *gorm.DB) (*[]Key, error) {
